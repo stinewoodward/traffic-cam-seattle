@@ -1,0 +1,19 @@
+{
+  "name": "traffic-cam-seattle",
+  "version": "1.0.0",
+  "description": "This web app represents the locations of SDOT- and WSDOT-maintained traffic cameras in Seattle, WA.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stinewoodward/traffic-cam-seattle.git"
+  },
+  "author": "Christine Woodward and Andrea Parr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stinewoodward/traffic-cam-seattle/issues"
+  },
+  "homepage": "https://github.com/stinewoodward/traffic-cam-seattle#readme"
+}
