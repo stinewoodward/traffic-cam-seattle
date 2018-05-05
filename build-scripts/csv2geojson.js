@@ -1,71 +1,64 @@
-// require() function grabs relevant packages
-const fs = require('fs'),
-      csv2geojson = require('csv2geojson'),
-      chalk = require('chalk');
+"use strict"
 
-// converts traffic signal csv to geojson and filters out unnecessary attributes
-function convertCsv() {
-  // reads traffic signals csv file into script as string
-  fs.readFile(__dirname + '/../project-files/austin-traffic-signals.csv', 'utf-8', (err, csvString) => {
+var csv2geojson = require('csv2geojson');
+var fs = require('fs');
+
+// read file as string
+fs.readFile(__dirname + '/../project-files/seattle-traffic-cameras.csv', 'utf-8', (err, csvString) => {
+
+  if (err) throw err;
+
+  // convert to GeoJSON
+  csv2geojson.csv2geojson(csvString, {
+    latfield: 'YPOS',
+    lonfield: 'XPOS',
+    delimiter: ','
+  }, (err, geojson) => {
 
     if (err) throw err;
 
-    console.log(chalk.green('austin-traffic-signals.csv loaded'))
-    console.log(chalk.green('parsing csv ...'))
+    var outGeoJSON = filterFields(geojson);
 
-    // use csv2geojson method from csv2geojson package to parse csv data
-    csv2geojson.csv2geojson(csvString, {
-      latfield: 'LATITUDE',
-      lonfield: 'LONGITUDE',
-      delimiter: ','
-    }, (err, geojson) => {
+    // write file
+    fs.writeFile(__dirname + '/../data/seattle-traffic-cameras.json', JSON.stringify(outGeoJSON), 'utf-8', (err) => {
 
       if (err) throw err;
 
-      // call filterFields function and pass it the newly created geojson
-      var outGeoJSON = filterFields(geojson);
-
-      // takes object returned from filterFields() and writes output file, stringigying object
-      fs.writeFile(__dirname + '/../data/austin-traffic-signals.json', JSON.stringify(outGeoJSON), 'utf-8', (err) => {
-
-        if (err) throw err;
-
-        console.log(chalk.green('austin-traffic-signals.json written to file'));
-      });
-    })
-  });
-}
+      console.log('done writing file');
+    });
+  })
+});
 
 function filterFields(geojson) {
-  // creates shortcut to traffic signals and empty array for relevant attributes
+  // shorthand to our features
   var features = geojson.features,
-    newFeatures = [];
-  // for each traffic signal
+      newFeatures = []; // empty array for new features
+
+  // loop through all the features
   features.forEach((feature) => {
-    // create empty object to temporarily hold properties
+    // on each loop, create an empty object
     var tempProps = {};
-    // iterate through traffic signal properties
+    // loop through each of the properties for that feature
     for (var prop in feature.properties) {
-      if (prop === 'COUNCIL_DISTRICT' || prop === 'SIGNAL_ID') {
-        tempProps[prop] = feature.properties[prop]; // for each signal, assign council district and signal_id
-                                                    // values to tempProps variable
+      // if it's a match
+      if (prop === 'OWNERSHIPCD') {
+        // create the prop/value
+        tempProps[prop] = feature.properties[prop];
       }
     }
-    // push relevant attributes into newFeatures
+    // now push a new feature to the newFeatures array
+    // we will use the existing feature type and geometry,
+    // but we can use our new properties as the "properties" value
     newFeatures.push({
       "type": feature.type,
       "geometry": feature.geometry,
       "properties": tempProps
     });
   });
-
-  // return json object
+  // finally, return a GeoJSON object FeatureCollection,
+  // using the new features as the "features" value
   return {
     "type": "FeatureCollection",
     "features": newFeatures
   }
 }
-
-// specifies what is returned by require() calls
-exports.convertCsv = convertCsv;
-exports.filterFields = filterFields;
