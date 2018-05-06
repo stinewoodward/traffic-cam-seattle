@@ -1,5 +1,7 @@
-const fs = require('fs'),
-      chalk = require('chalk');
+"use strict"
+
+var fs = require('fs');
+var chalk = require('chalk');
 
 // prepare to create color scheme
 function extractColors() {
@@ -13,18 +15,18 @@ function extractColors() {
     const data = JSON.parse(response);
 
     console.log(chalk.blue("cartocolors.json data parsed to JSON"));
-    // create Safe color scheme from parsed data
+    // create Prism color scheme from parsed data
     const outputData = {
-      'Safe': data['Safe']
+      'Prism': data['Prism']
     };
 
-    console.log(chalk.blue("vivid scheme extracted from parsed data"));
+    console.log(chalk.blue("prism scheme extracted from parsed data"));
     // write the file to the data directory
-    fs.writeFile(__dirname + '/../data/safecolors.json', JSON.stringify(outputData), 'utf-8', function (err) {
+    fs.writeFile(__dirname + '/../data/prismcolors.json', JSON.stringify(outputData), 'utf-8', function (err) {
 
       if (err) throw err;
 
-      console.log(chalk.blue('safecolors.json written to data/ dir'));
+      console.log(chalk.blue('prismcolors.json written to data/ dir'));
     });
   });
 }
