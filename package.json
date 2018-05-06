@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/stinewoodward/traffic-cam-seattle/issues"
   },
-  "homepage": "https://github.com/stinewoodward/traffic-cam-seattle#readme"
+  "homepage": "https://github.com/stinewoodward/traffic-cam-seattle#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "csv-parse": "^2.3.0",
+    "csv2geojson": "^5.0.2"
+  }
 }
