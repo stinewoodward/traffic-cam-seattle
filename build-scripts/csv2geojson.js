@@ -20,7 +20,7 @@ fs.readFile(__dirname + '/../project-files/seattle-traffic-cameras.csv', 'utf-8'
     var outGeoJSON = filterFields(geojson);
 
     // write file
-    fs.writeFile(__dirname + '/../data/seattle-traffic-cameras.json', JSON.stringify(outGeoJSON), 'utf-8', (err) => {
+    fs.writeFile(__dirname + '/../data/seattle-traffic-cams.json', JSON.stringify(outGeoJSON), 'utf-8', (err) => {
 
       if (err) throw err;
 
@@ -41,7 +41,7 @@ function filterFields(geojson) {
     // loop through each of the properties for that feature
     for (var prop in feature.properties) {
       // if it's a match
-      if (prop === 'OWNERSHIPCD') {
+      if (prop === 'OWNERSHIPCD' || prop === 'CAMERALABEL') {
         // create the prop/value
         tempProps[prop] = feature.properties[prop];
       }
