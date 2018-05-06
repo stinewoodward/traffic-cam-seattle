@@ -82,7 +82,7 @@
 
     // use jquery .when() function to asynchronously load files
     $.when(
-      $.getJSON('data/seattle-traffic-cameras.json')
+      $.getJSON('data/seattle-traffic-cams.json')
     ).done(function(camerasData) {
 
       // create new markerClusterGroup
@@ -94,7 +94,7 @@
         var coords = feature.geometry.coordinates,
           marker = L.marker([coords[1], coords[0]]);
         // bind a tooltip to the marker
-        marker.bindTooltip("Signal ID: " + feature.properties.SIGNAL_ID);
+        marker.bindTooltip("Location: " + feature.properties.CAMERALABEL);
         // add the marker to the markerClusterGroup
         markers.addLayer(marker);
 
