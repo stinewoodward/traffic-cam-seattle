@@ -151,7 +151,33 @@
             $('#district-' + feature.properties.C_DISTRICT).removeClass('highlight');
           });
         }
-      }).addTo(map);;addTo(map);
+      }).addTo(map);
+
+      $('.legend-item').on('mouseover', function() {
+        // extract the specific number from the specific item
+        // being moused over
+        var num = this.id.replace('district-', '');
+        // send this number as an argument to the highlightDistrict function
+        highlightDistrict(num);
+      });
+
+      function highlightDistrict(districtNum) {
+        // loop through the districts polygons
+        districtsLayerGroup.eachLayer(function(layer) {
+          // if the district id matches the one we're mousing over
+          if (layer.feature.properties.C_DISTRICT === districtNum) {
+            // change the layer style
+            layer.setStyle({
+              fillOpacity: .8
+            }).bringToFront();
+          } else {
+            // return to original
+            layer.setStyle({
+              fillOpacity: .6
+            });
+          }
+        });
+      }
 
     });
 
