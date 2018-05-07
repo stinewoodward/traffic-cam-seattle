@@ -21,6 +21,26 @@
       bottom: 0;
     }
 
+    h1 {
+        position: absolute;
+        z-index: 650;
+        top: 10px;
+        left: 60px;
+        padding: 8px 15px;
+        margin: 0;
+        color: black;
+        font-size: 1.5em;
+        background: rgba(256, 256, 256, .9);
+        border-radius: 5px;
+    }
+
+    .tooltip {
+        color: black;
+        background: rgba(256, 256, 256, .9);
+        border: 0;
+        font-size: 1.4em;
+    }
+
     #ui {
       position: absolute;
       z-index: 1000;
@@ -55,13 +75,13 @@
 </head>
 
 <body>
-
+  <h1>Seattle Traffic Camera Locations &ndash; 2012</h1>
   <div id="map"></div>
   <div id="ui">
       <h3>Seattle City Council Districts</h3>
-      <h4>(number of traffic cameras)</h4>
       <ul id="legend-list"></ul>
-    
+      <h4>number of traffic cameras indicated by circles</h4>
+
   </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -97,7 +117,7 @@
       // loop through the features and create a new
       // list item for each feature in the legend
       for(var i = 1; i <= districts.features.length; i++) {
-          legendList.append('<li class="legend-item" id="district-' + i + '"><a style="color:' + colors.Prism[7][i -1] + '" href="#">District ' + i + ' (<span></span>)</a></li>');
+          legendList.append('<li class="legend-item" id="district-' + i + '"><a style="color:' + colors.Prism[7][i -1] + '" href="#">District ' + i + '</a></li>');
       }
 
       // create new markerClusterGroup
@@ -108,8 +128,13 @@
         // create a new Leaflet marker for each
         var coords = feature.geometry.coordinates,
           marker = L.marker([coords[1], coords[0]]);
-        // bind a tooltip to the marker
-        marker.bindTooltip("Location: " + feature.properties.CAMERALABEL);
+        // assign text to tooltip
+        var tooltip = "Location: " + feature.properties.CAMERALABEL;
+        // bind a tooltip to the marker and give classname
+        marker.bindTooltip(tooltip, {
+          sticky: true,
+          className: 'tooltip'
+        });
         // add the marker to the markerClusterGroup
         markers.addLayer(marker);
 
@@ -128,8 +153,6 @@
           }
         },
         onEachFeature(feature, layer) {
-          // select each legend list item span and append the total count of signals
-          $('#district-' + feature.properties.C_DISTRICT + ' span').append(feature.properties.count);
 
           //when mousing over a polygon layer
           layer.on('mouseover', function () {
