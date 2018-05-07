@@ -95,7 +95,7 @@
       var markers = L.markerClusterGroup();
 
       // loop through all our signals features
-      camerasData.features.forEach(function(feature) {
+      cameras.features.forEach(function(feature) {
         // create a new Leaflet marker for each
         var coords = feature.geometry.coordinates,
           marker = L.marker([coords[1], coords[0]]);
