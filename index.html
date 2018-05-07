@@ -160,6 +160,14 @@
         // send this number as an argument to the highlightDistrict function
         highlightDistrict(num);
       });
+      $('.legend-item').on('mouseout', function() {
+        // reset polygon styel
+        districtsLayerGroup.eachLayer(function(layer){
+          layer.setStyle({
+            fillOpacity: .6
+          });
+        });
+      });
 
       function highlightDistrict(districtNum) {
         // loop through the districts polygons
