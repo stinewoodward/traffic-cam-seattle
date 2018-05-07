@@ -58,8 +58,8 @@
 
   <div id="map"></div>
   <div id="ui">
+      <h3>Seattle City Council Districts</h3>
       <h4>(number of traffic cameras)</h4>
-    <h3>Seattle Neighborhoods</h3>
     
   </div>
 
@@ -82,8 +82,14 @@
 
     // use jquery .when() function to asynchronously load files
     $.when(
+      $.getJSON('data/council-districts.json'),
+      $.getJSON('data/prismcolors.json'),
       $.getJSON('data/seattle-traffic-cams.json')
-    ).done(function(camerasData) {
+    ).done(function(districtsData, colorsData, camerasData) {
+
+      var districts = districtsData[0],
+          colors = colorsData[0],
+          cameras = camerasData[0];
 
       // create new markerClusterGroup
       var markers = L.markerClusterGroup();
@@ -101,6 +107,34 @@
       });
       // add the markerClusterGroup to the map
       map.addLayer(markers);
+
+      // create a layerGroup with the geojson data
+      var districtsLayerGroup = L.geoJson(districts, {
+        style: function (feature) {
+          // use the colors object to style
+          // each polygon a unique color
+          return {
+            color: colors.Prism[7][feature.properties.C_DISTRICT - 1],
+            fillOpacity: .6
+          }
+        },
+        onEachFeature(feature, layer) {
+          // select each legend list item span and append the total count of signals
+          $('#district-' + feature.properties.C_DISTRICT + ' span').append(feature.properties.count);
+
+          //when mousing over a polygon layer
+          layer.on('mouseover', function () {
+            // provide a visual affordance
+            this.setStyle({
+              fillOpacity: .8
+            });
+
+            // select the cooresponding list item
+            // and add the highlight class to make bold
+            $('#district-' + feature.properties.C_DISTRICT).addClass('highlight');
+          })
+        }
+      }).addTo(map);;addTo(map);
 
     });
 
