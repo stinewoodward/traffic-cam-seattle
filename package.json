@@ -19,6 +19,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "csv-parse": "^2.3.0",
-    "csv2geojson": "^5.0.2"
+    "csv2geojson": "^5.0.2",
+    "fs": "0.0.1-security"
   }
 }
