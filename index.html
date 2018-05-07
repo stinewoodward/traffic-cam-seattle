@@ -60,6 +60,7 @@
   <div id="ui">
       <h3>Seattle City Council Districts</h3>
       <h4>(number of traffic cameras)</h4>
+      <ul id="legend-list"></ul>
     
   </div>
 
@@ -90,6 +91,14 @@
       var districts = districtsData[0],
           colors = colorsData[0],
           cameras = camerasData[0];
+
+      var legendList = $('#legend-list');
+
+      // loop through the features and create a new
+      // list item for each feature in the legend
+      for(var i = 1; i <= districts.features.length; i++) {
+          legendList.append('<li class="legend-item" id="district-' + i + '"><a style="color:' + colors.Prism[7][i -1] + '" href="#">District ' + i + ' (<span></span>)</a></li>');
+      }
 
       // create new markerClusterGroup
       var markers = L.markerClusterGroup();
