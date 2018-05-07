@@ -58,11 +58,10 @@
 
   <div id="map"></div>
   <div id="ui">
+      <h3>Seattle City Council Districts</h3>
+      <h4>(number of traffic cameras)</h4>
+      <ul id="legend-list"></ul>
     
-    <h3>Seattle Neighborhoods</h3>
-    <h4>(number of traffic cameras)</h4>
-    <ul id="legend-list"></ul>
-
   </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -84,14 +83,28 @@
 
     // use jquery .when() function to asynchronously load files
     $.when(
+      $.getJSON('data/council-districts.json'),
+      $.getJSON('data/prismcolors.json'),
       $.getJSON('data/seattle-traffic-cams.json')
-    ).done(function(camerasData) {
+    ).done(function(districtsData, colorsData, camerasData) {
+
+      var districts = districtsData[0],
+          colors = colorsData[0],
+          cameras = camerasData[0];
+
+      var legendList = $('#legend-list');
+
+      // loop through the features and create a new
+      // list item for each feature in the legend
+      for(var i = 1; i <= districts.features.length; i++) {
+          legendList.append('<li class="legend-item" id="district-' + i + '"><a style="color:' + colors.Prism[7][i -1] + '" href="#">District ' + i + ' (<span></span>)</a></li>');
+      }
 
       // create new markerClusterGroup
       var markers = L.markerClusterGroup();
 
       // loop through all our signals features
-      camerasData.features.forEach(function(feature) {
+      cameras.features.forEach(function(feature) {
         // create a new Leaflet marker for each
         var coords = feature.geometry.coordinates,
           marker = L.marker([coords[1], coords[0]]);
@@ -103,6 +116,34 @@
       });
       // add the markerClusterGroup to the map
       map.addLayer(markers);
+
+      // create a layerGroup with the geojson data
+      var districtsLayerGroup = L.geoJson(districts, {
+        style: function (feature) {
+          // use the colors object to style
+          // each polygon a unique color
+          return {
+            color: colors.Prism[7][feature.properties.C_DISTRICT - 1],
+            fillOpacity: .6
+          }
+        },
+        onEachFeature(feature, layer) {
+          // select each legend list item span and append the total count of signals
+          $('#district-' + feature.properties.C_DISTRICT + ' span').append(feature.properties.count);
+
+          //when mousing over a polygon layer
+          layer.on('mouseover', function () {
+            // provide a visual affordance
+            this.setStyle({
+              fillOpacity: .8
+            });
+
+            // select the cooresponding list item
+            // and add the highlight class to make bold
+            $('#district-' + feature.properties.C_DISTRICT).addClass('highlight');
+          })
+        }
+      }).addTo(map);;addTo(map);
 
     });
 
