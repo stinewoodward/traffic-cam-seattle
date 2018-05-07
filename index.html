@@ -82,8 +82,11 @@
 
     // use jquery .when() function to asynchronously load files
     $.when(
+      $.getJSON('data/council-districts.json'),
       $.getJSON('data/seattle-traffic-cams.json')
-    ).done(function(camerasData) {
+    ).done(function(camerasData, districtsData) {
+
+      var districts = districtsData[0],
 
       // create new markerClusterGroup
       var markers = L.markerClusterGroup();
