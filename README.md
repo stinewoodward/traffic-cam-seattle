@@ -1,9 +1,9 @@
 # traffic-cam-seattle
 This web app represents the locations of SDOT- and WSDOT-maintained traffic cameras in Seattle, WA.
 
-Added Index and file structure
 
-Obtained Seattle Neighborhoods from [City of Seattle Open Data Portal](https://data.seattle.gov/dataset/Council-Districts/wud8-na47)
+Seattle Traffic Camera data from [City of Seattle Open Data Portal](https://data.seattle.gov/Transportation/Seattle-Traffic-Cameras/65fc-btcc)
+Color Scheme from [CARTOColors](https://github.com/CartoDB/cartocolor)
 
 Examined Council Districts Shapefile in Terminal and transform into a GeoJSON file
 
