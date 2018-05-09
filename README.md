@@ -4,6 +4,8 @@ This web app represents the locations of SDOT- and WSDOT-maintained traffic came
 The project was started by generating an index html file and folder structure that included 'project-files' for storing source data, 'build-scripts' for storing Node JS files, and 'data' for storing cleaned data.
 
 Seattle City Council Districts were obtained from [City of Seattle Open Data Portal](https://data.seattle.gov/dataset/Council-Districts/wud8-na47)
+Seattle traffic camera data from [City of Seattle Open Data Portal](https://data.seattle.gov/Transportation/Seattle-Traffic-Cameras/65fc-btcc)
+Color from [CARTOColors](https://github.com/CartoDB/cartocolor)
 
 Examined Council Districts Shapefile in Terminal and transform into a GeoJSON file
 
