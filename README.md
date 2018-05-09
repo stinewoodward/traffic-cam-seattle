@@ -1,9 +1,9 @@
 # traffic-cam-seattle
 This web app represents the locations of SDOT- and WSDOT-maintained traffic cameras in Seattle, WA.
 
-Added Index and file structure
+The project was started by generating an index html file and folder structure that included 'project-files' for storing source data, 'build-scripts' for storing Node JS files, and 'data' for storing cleaned data. 
 
-Obtained Seattle Neighborhoods from [City of Seattle Open Data Portal](https://data.seattle.gov/dataset/Council-Districts/wud8-na47)
+Seattle City Council Districts were obtained from [City of Seattle Open Data Portal](https://data.seattle.gov/dataset/Council-Districts/wud8-na47)
 
 Examined Council Districts Shapefile in Terminal and transform into a GeoJSON file
 
@@ -30,3 +30,4 @@ $ ogrinfo -so Council_Districts.shp Council_Districts
     Shape_Area: Real (24.15)
 $ ogr2ogr -f "GeoJSON" ../../data/council-districts.json Council_Districts.shp
 ```
+The Council Districts layer was styled with the Prism spectrum from CartoColors. Mouse off and mouse on features were added to provide an interactive element for users.
